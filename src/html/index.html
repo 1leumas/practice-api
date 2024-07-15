@@ -14,7 +14,6 @@
         height: 100vh;
         flex-direction: column;
       }
-
       .container {
         background-color: #fff;
         padding: 20px;
@@ -22,23 +21,19 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 300px;
       }
-
       .form-group {
         margin-bottom: 15px;
       }
-
       .form-group label {
         display: block;
         margin-bottom: 5px;
       }
-
       .form-group input,
       .form-group textarea {
         width: 100%;
         padding: 8px;
         box-sizing: border-box;
       }
-
       .form-group button {
         padding: 10px 15px;
         background-color: #007bff;
@@ -48,17 +43,14 @@
         cursor: pointer;
         margin-right: 10px;
       }
-
       .form-group button:disabled {
         background-color: #a0a0a0;
       }
-
       .tabs {
         display: flex;
         justify-content: space-around;
         margin-bottom: 20px;
       }
-
       .tab {
         cursor: pointer;
         padding: 10px;
@@ -66,16 +58,13 @@
         color: #fff;
         border-radius: 4px;
       }
-
       .tab.active {
         background-color: #0056b3;
       }
-
       .message {
         margin-top: 20px;
         font-size: 16px;
       }
-
       .logout-button {
         background-color: #dc3545;
         padding: 10px;
@@ -85,10 +74,19 @@
         cursor: pointer;
         margin-top: 20px;
       }
+      .welcome-message {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
     </style>
   </head>
-
   <body>
+    <div
+      class="welcome-message"
+      id="welcomeMessage"
+      style="display: none"
+    ></div>
     <div class="tabs" id="tabs" style="display: none">
       <div class="tab active" id="loginTab" onclick="showLogin()">
         Login/Register
@@ -196,8 +194,12 @@
           const data = await response.json();
           messageElement.innerHTML = `Logged in successfully as ${email}`;
           localStorage.setItem('token', data.token);
+          localStorage.setItem('email', email); // Store the email in local storage
           document.getElementById('exerciseTab').style.display = 'block';
           document.getElementById('logoutButton').style.display = 'block';
+          document.getElementById('welcomeMessage').innerHTML =
+            `Welcome, ${email}`;
+          document.getElementById('welcomeMessage').style.display = 'block';
           showExercise();
         } else {
           const error = await response.json();
@@ -276,19 +278,25 @@
 
       function logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('email');
         document.getElementById('exerciseTab').style.display = 'none';
         document.getElementById('logoutButton').style.display = 'none';
+        document.getElementById('welcomeMessage').style.display = 'none';
         showLogin();
       }
 
       // Check if user is logged in on page load
       window.onload = function () {
         const token = localStorage.getItem('token');
-        if (token) {
+        const email = localStorage.getItem('email');
+        if (token && email) {
           document.getElementById('tabs').style.display = 'none';
           document.getElementById('loginContainer').style.display = 'none';
           document.getElementById('exerciseContainer').style.display = 'block';
           document.getElementById('logoutButton').style.display = 'block';
+          document.getElementById('welcomeMessage').innerHTML =
+            `Welcome!, ${email}`;
+          document.getElementById('welcomeMessage').style.display = 'block';
         } else {
           document.getElementById('tabs').style.display = 'block';
         }

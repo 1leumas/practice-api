@@ -18,6 +18,15 @@ class ExercisesService {
     }
     return exercise;
   }
+
+  async deleteById(id) {
+    const repo = new ExercisesRepository();
+    const exercise = await repo.findById(id);
+    if (!exercise) {
+      throw new Error('Exercise not found');
+    }
+    await repo.deleteById(id);
+  }
 }
 
 module.exports = ExercisesService;

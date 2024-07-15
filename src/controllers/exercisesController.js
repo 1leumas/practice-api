@@ -39,4 +39,19 @@ async function getExerciseById(req, res) {
   }
 }
 
-module.exports = { create, getExerciseById };
+async function deleteById(req, res) {
+  const { id } = req.params;
+
+  const exercisesService = new ExercisesService();
+
+  try {
+    await exercisesService.deleteById(id);
+    return res.status(200).json({ message: 'Exercise deleted successfully' });
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { create, getExerciseById, deleteById };

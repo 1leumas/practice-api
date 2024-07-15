@@ -49,6 +49,12 @@ class ExercisesRepository {
     const exercise = await db.get(query, [id]);
     return exercise;
   }
+
+  async deleteById(id) {
+    const query = `DELETE FROM exercises WHERE id = ?`;
+    const db = await sqliteConnection();
+    await db.run(query, [id]);
+  }
 }
 
 module.exports = ExercisesRepository;

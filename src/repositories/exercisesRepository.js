@@ -42,6 +42,13 @@ class ExercisesRepository {
     const exercise = await db.get(query, [name]);
     return exercise;
   }
+
+  async findById(id) {
+    const query = `SELECT * FROM exercises WHERE id = ?`;
+    const db = await sqliteConnection();
+    const exercise = await db.get(query, [id]);
+    return exercise;
+  }
 }
 
 module.exports = ExercisesRepository;

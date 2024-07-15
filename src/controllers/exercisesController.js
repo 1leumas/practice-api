@@ -24,4 +24,19 @@ async function create(req, res) {
   }
 }
 
-module.exports = { create };
+async function getExerciseById(req, res) {
+  const { id } = req.params;
+
+  const exercisesService = new ExercisesService();
+
+  try {
+    const exercise = await exercisesService.getExerciseById(id);
+    return res.status(200).json(exercise);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { create, getExerciseById };

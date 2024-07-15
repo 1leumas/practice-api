@@ -1,117 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Test</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise App</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-      .container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      .form-group {
-        margin-bottom: 15px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      .form-group input {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-      }
-      .form-group button {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-right: 10px;
-      }
-      .form-group button:disabled {
-        background-color: #a0a0a0;
-      }
-      .message {
-        margin-top: 20px;
-        font-size: 16px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .form-group button:disabled {
+            background-color: #a0a0a0;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .tab.active {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Login or Register</h2>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" required />
-      </div>
-      <div class="form-group">
-        <button id="loginButton" onclick="login()">Login</button>
-        <button id="registerButton" onclick="register()">Register</button>
-      </div>
-      <div class="message" id="message"></div>
+</head>
+<body>
+    <div class="tabs">
+        <div class="tab active" id="loginTab" onclick="showLogin()">Login/Register</div>
+        <div class="tab" id="exerciseTab" onclick="showExercise()" style="display: none;">Create Exercise</div>
+    </div>
+    <div class="container" id="loginContainer">
+        <h2>Login or Register</h2>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <button id="loginButton" onclick="login()">Login</button>
+            <button id="registerButton" onclick="register()">Register</button>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+    <div class="container" id="exerciseContainer" style="display: none;">
+        <h2>Create Exercise</h2>
+        <div class="form-group">
+            <label for="exerciseName">Name:</label>
+            <input type="text" id="exerciseName" required>
+        </div>
+        <div class="form-group">
+            <label for="exerciseCategory">Category:</label>
+            <input type="text" id="exerciseCategory" required>
+        </div>
+        <div class="form-group">
+            <label for="exerciseSubcategory">Subcategory:</label>
+            <input type="text" id="exerciseSubcategory">
+        </div>
+        <div class="form-group">
+            <label for="exerciseDescription">Description:</label>
+            <textarea id="exerciseDescription"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="exerciseVideo">Video URL:</label>
+            <input type="url" id="exerciseVideo">
+        </div>
+        <div class="form-group">
+            <button onclick="createExercise()">Create Exercise</button>
+        </div>
+        <div class="message" id="exerciseMessage"></div>
     </div>
 
     <script>
-      async function login() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        const response = await fetch('http://localhost:3000/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const messageElement = document.getElementById('message');
-        if (response.ok) {
-          const data = await response.json();
-          messageElement.innerHTML = `Logged in successfully as ${email}`;
-          // Optionally, you can store the token in local storage
-          localStorage.setItem('token', data.token);
-        } else {
-          const error = await response.json();
-          messageElement.innerHTML = `Error: ${error.error}`;
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('exerciseContainer').style.display = 'none';
+            document.getElementById('loginTab').classList.add('active');
+            document.getElementById('exerciseTab').classList.remove('active');
         }
-      }
 
-      async function register() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        const response = await fetch('http://localhost:3000/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const messageElement = document.getElementById('message');
-        if (response.ok) {
-          messageElement.innerHTML = `User registered successfully. You can now log in with ${email}`;
-        } else {
-          const error = await response.json();
-          messageElement.innerHTML = `Error: ${error.error}`;
+        function showExercise() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('exerciseContainer').style.display = 'block';
+            document.getElementById('loginTab').classList.remove('active');
+            document.getElementById('exerciseTab').classList.add('active');
         }
-      }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageElement = document.getElementById('message');
+
+            if (!validateEmail(email)) {
+                messageElement.innerHTML = 'Please enter a valid email address.';
+                return;
+            }
+
+            const response = await fetch('http://localhost:3000/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                messageElement.innerHTML = `Logged in successfully as ${email}`;
+                localStorage.setItem('token', data.token);
+                document.getElementById('exerciseTab').style.display = 'block';
+            } else {
+                const error = await response.json();
+                messageElement.innerHTML = `Error: ${error.error}`;
+            }
+        }
+
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageElement = document.getElementById('message');
+
+            if (!validateEmail(email)) {
+                messageElement.innerHTML = 'Please enter a valid email address.';
+                return;
+            }
+
+            const response = await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                messageElement.innerHTML = `User registered successfully. You can now log in with ${email}`;
+            } else {
+                const error = await response.json();
+                messageElement.innerHTML = `Error: ${error.error}`;
+            }
+        }
+
+        async function createExercise() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('exerciseMessage').innerHTML = 'You must be logged in to create an exercise.';
+                return;
+            }
+
+            const name = document.getElementById('exerciseName').value;
+            const category = document.getElementById('exerciseCategory').value;
+            const subcategory = document.getElementById('exerciseSubcategory').value;
+            const description = document.getElementById('exerciseDescription').value;
+            const video = document.getElementById('exerciseVideo').value;
+
+            const response = await fetch('http://localhost:3000/exercises/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, category, subcategory, description, video })
+            });
+
+            const messageElement = document.getElementById('exerciseMessage');
+            if (response.ok) {
+                const data = await response.json();
+                messageElement.innerHTML = 'Exercise created successfully';
+            } else {
+                const error = await response.json();
+                messageElement.innerHTML = `Error: ${error.error}`;
+            }
+        }
+
+        // Check if user is logged in on page load
+        window.onload = function() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('exerciseTab').style.display = 'block';
+            }
+        };
     </script>
-  </body>
+</body>
 </html>

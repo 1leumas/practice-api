@@ -1,7 +1,9 @@
 const UsersRepository = require('../repositories/UsersRepository');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = 'secret';
+const SALT_ROUNDS = 10;
 
 class UsersService {
   async create(email, password) {
@@ -10,7 +12,9 @@ class UsersService {
     if (userAlreadyExists) {
       throw new Error('User already exists');
     }
-    return repo.create(email, password);
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    return repo.create(email, hashedPassword);
   }
 
   async login(email, password) {
@@ -19,7 +23,8 @@ class UsersService {
     if (!user) {
       throw new Error('User not found');
     }
-    if (user.password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new Error('Invalid password');
     }
 

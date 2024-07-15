@@ -1,8 +1,9 @@
 const sqliteConnection = require('../');
-const createUsers = require('./createUsers.js');
+const createUsers = require('./createUsers');
+const createExercises = require('./createExercises');
 
 async function migrationsRun() {
-  const schemas = [createUsers].join('');
+  const schemas = [createUsers, createExercises].join('');
 
   sqliteConnection()
     .then((db) => db.exec(schemas))

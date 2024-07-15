@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const { create, login } = require('../controllers/usersController');
-const ensureData = require('../middlewares/ensureData.js');
+const { ensureUserData } = require('../middlewares/ensureData');
 
 const usersRouter = Router();
 
-usersRouter.post('/', ensureData, create);
-usersRouter.post('/login', ensureData, login);
+usersRouter.post('/', ensureUserData, create);
+usersRouter.post('/login', ensureUserData, login);
 
 module.exports = usersRouter;

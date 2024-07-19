@@ -1,12 +1,12 @@
-const UsersService = require('../services/usersService');
+const UsersService = require('../services/UsersService');
 
 async function create(req, res) {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   const usersService = new UsersService();
 
   try {
-    const user = await usersService.create(email, password);
+    const user = await usersService.create(email, password, role);
     return res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
     return res.status(400).json({ error: error.message });

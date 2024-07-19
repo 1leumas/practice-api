@@ -7,12 +7,10 @@ let token;
 beforeAll(async () => {
   server = app.listen(4001); // Use a different port for tests
   // Log in to get a token
-  const res = await request(server)
-    .post('/users/login')
-    .send({
-      email: 'testuser@example.com',
-      password: 'password123'
-    });
+  const res = await request(server).post('/users/login').send({
+    email: 'testuser@example.com',
+    password: 'password123',
+  });
   token = res.body.token;
 });
 
@@ -30,13 +28,16 @@ describe('Exercise Endpoints', () => {
         category: 'Strength',
         subcategory: 'Upper Body',
         description: 'A basic push-up exercise.',
-        video: 'https://example.com/video'
+        video: 'https://example.com/video',
       });
     if (res.statusCode === 400) {
       expect(res.body).toHaveProperty('error', 'Exercise already exists');
     } else {
       expect(res.statusCode).toEqual(201);
-      expect(res.body).toHaveProperty('message', 'Exercise created successfully');
+      expect(res.body).toHaveProperty(
+        'message',
+        'Exercise created successfully'
+      );
     }
   });
 });

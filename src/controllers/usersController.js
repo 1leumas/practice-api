@@ -26,4 +26,14 @@ async function login(req, res) {
   }
 }
 
-module.exports = { create, login };
+async function getUser(req, res) {
+  const { user } = req;
+
+  try {
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { create, login, getUser };

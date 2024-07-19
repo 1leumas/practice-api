@@ -28,9 +28,13 @@ class UsersService {
       throw new Error('Invalid password');
     }
 
-    const token = jwt.sign({ email: user.email, id: user.id, role: user.role }, SECRET_KEY, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { email: user.email, id: user.id, role: user.role },
+      SECRET_KEY,
+      {
+        expiresIn: '1h',
+      }
+    );
     return token;
   }
 

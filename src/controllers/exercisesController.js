@@ -54,4 +54,17 @@ async function deleteById(req, res) {
   }
 }
 
-module.exports = { create, getExerciseById, deleteById };
+async function getAllExercises(req, res) {
+  const exercisesService = new ExercisesService();
+
+  try {
+    const exercises = await exercisesService.getAllExercises();
+    return res.status(200).json(exercises);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { create, getExerciseById, deleteById, getAllExercises };

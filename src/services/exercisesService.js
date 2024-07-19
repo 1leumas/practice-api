@@ -27,6 +27,11 @@ class ExercisesService {
     }
     await repo.deleteById(id);
   }
+
+  async getAllExercises() {
+    const repo = new ExercisesRepository();
+    return repo.getAll();
+  }
 }
 
 module.exports = ExercisesService;

@@ -5,7 +5,6 @@ const routes = require('./routes/index');
 const migrationsRun = require('./database/migrations/index.js');
 
 const app = express();
-const port = 3000;
 
 // Run database migrations
 migrationsRun();
@@ -18,6 +17,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/', routes);
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+module.exports = app;

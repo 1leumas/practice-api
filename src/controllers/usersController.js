@@ -20,7 +20,7 @@ async function login(req, res) {
 
   try {
     const token = await usersService.login(email, password);
-    return res.status(200).json({ token });
+    return res.status(200).json({ email, token });
   } catch (error) {
     return res.status(401).json({ error: error.message });
   }

@@ -4,7 +4,7 @@ const UsersRepository = require('../repositories/UsersRepository');
 const SECRET_KEY = 'secret';
 
 async function authenticateToken(req, res, next) {
-  console.log('authenticating token');
+  // console.log('authenticating token');
   const token = req.headers['authorization'];
   if (!token) {
     return res.status(403).json({ error: 'No token provided' });

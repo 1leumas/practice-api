@@ -28,7 +28,6 @@ async function login(req, res) {
 
 async function getUser(req, res) {
   const { user } = req;
-
   try {
     return res.status(200).json(user);
   } catch (error) {

@@ -5,7 +5,7 @@ let server;
 let token;
 
 beforeAll(async () => {
-  server = app.listen(4001); // Use a different port for tests
+  server = app.listen(4002); // Use a different port for tests
   // Log in to get a token
   const res = await request(server).post('/users/login').send({
     email: 'testuser@example.com',

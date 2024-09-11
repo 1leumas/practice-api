@@ -1,4 +1,4 @@
-const UsersService = require('../services/UsersService');
+const UsersService = require('../services/usersService');
 
 async function create(req, res) {
   const { email, password, role } = req.body;

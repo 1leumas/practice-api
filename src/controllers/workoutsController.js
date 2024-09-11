@@ -1,4 +1,4 @@
-const WorkoutsService = require('../services/WorkoutsService');
+const WorkoutsService = require('../services/workoutsService');
 
 async function create(req, res) {
   const { name } = req.body;

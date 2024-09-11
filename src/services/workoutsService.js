@@ -1,4 +1,4 @@
-const WorkoutsRepository = require('../repositories/WorkoutsRepository');
+const WorkoutsRepository = require('../repositories/workoutsRepository');
 
 class WorkoutsService {
   async create(userId, name) {

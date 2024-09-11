@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UsersRepository = require('../repositories/UsersRepository');
+const UsersRepository = require('../repositories/usersRepository');
 
 const SECRET_KEY = 'secret';
 
